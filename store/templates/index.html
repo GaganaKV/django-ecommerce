@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2 class="mb-4">All Products</h2>
+
+<div class="row mb-3">
+  <div class="col-md-3">
+    <h5>Categories</h5>
+    <ul class="list-group">
+      <a href="/" class="list-group-item">All</a>
+      {% for category in categories %}
+        <a href="/?category={{category.id}}" class="list-group-item">{{category.name}}</a>
+      {% endfor %}
+    </ul>
+  </div>
+
+  <div class="col-md-9">
+    <div class="row">
+      {% for product in products %}
+      <div class="col-md-4 mb-4">
+        <div class="card h-100">
+          {% if product.image %}
+            <img src="{{ product.image.url }}" class="card-img-top" style="height:200px; object-fit:cover;">
+          {% else %}
+            <img src="/static/images/default.png" class="card-img-top" style="height:200px; object-fit:cover;">
+          {% endif %}
+
+          <div class="card-body">
+            <h5 class="card-title">{{ product.name }}</h5>
+            <p class="card-text">₹{{ product.price }}</p>
+
+            <!-- ✅ Add action="/" to post to Index view -->
+            <form method="POST" action="/">
+              {% csrf_token %}
+              <input type="hidden" name="product" value="{{ product.id }}">
+              <button type="submit" class="btn btn-primary w-100">Add to Cart</button>
+            </form>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+{% endblock %}

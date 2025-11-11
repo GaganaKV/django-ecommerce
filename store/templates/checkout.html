@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block content %}
+<h3>Checkout</h3>
+<form method="POST">
+  {% csrf_token %}
+  <div class="mb-3">
+    <label>Address</label>
+    <input type="text" name="address" class="form-control" required>
+  </div>
+  <div class="mb-3">
+    <label>Phone</label>
+    <input type="text" name="phone" class="form-control" required>
+  </div>
+  <button type="submit" class="btn btn-primary">Place Order</button>
+</form>
+{% endblock %}

@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% block content %}
+<h3>My Orders</h3>
+<table class="table table-bordered">
+  <thead>
+    <tr>
+      <th>Product</th>
+      <th>Price</th>
+      <th>Quantity</th>
+      <th>Date</th>
+      <th>Status</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for order in orders %}
+    <tr>
+      <td>{{ order.product.name }}</td>
+      <td>₹{{ order.price }}</td>
+      <td>{{ order.quantity }}</td>
+      <td>{{ order.date }}</td>
+      <td>{% if order.status %}<span class="text-success">Delivered</span>{% else %}<span class="text-warning">Pending</span>{% endif %}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

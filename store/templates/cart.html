@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+{% load custom_filters %}
+{% block content %}
+
+<h3 class="mb-4">🛒 Your Cart</h3>
+
+{% if products %}
+<table class="table table-bordered align-middle text-center">
+  <thead class="table-light">
+    <tr>
+      <th>Product</th>
+      <th>Quantity</th>
+      <th>Price</th>
+      <th>Total</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for product in products %}
+    {% with quantity=cart|get_item:product.id %}
+    <tr>
+      <td>{{ product.name }}</td>
+
+      <!-- ✅ Quantity control -->
+      <td>
+        <div class="d-flex justify-content-center align-items-center">
+          <!-- Decrease button -->
+          <form method="POST" action="/">
+            {% csrf_token %}
+            <input type="hidden" name="product" value="{{ product.id }}">
+            <input type="hidden" name="remove" value="True">
+            <button type="submit" class="btn btn-outline-danger btn-sm">−</button>
+          </form>
+
+          <span class="mx-2">{{ quantity }}</span>
+
+          <!-- Increase button -->
+          <form method="POST" action="/">
+            {% csrf_token %}
+            <input type="hidden" name="product" value="{{ product.id }}">
+            <button type="submit" class="btn btn-outline-success btn-sm">+</button>
+          </form>
+        </div>
+      </td>
+
+      <td>₹{{ product.price }}</td>
+      <td>₹{{ product.price|multiply:quantity }}</td>
+    </tr>
+    {% endwith %}
+    {% endfor %}
+  </tbody>
+</table>
+
+<div class="text-end">
+  <a href="/check-out" class="btn btn-success">Proceed to Checkout</a>
+</div>
+
+{% else %}
+<div class="alert alert-warning">
+  Your cart is empty. <a href="/store">Continue shopping →</a>
+</div>
+{% endif %}
+
+{% endblock %}
